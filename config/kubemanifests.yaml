@@ -1,0 +1,152 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: D:\TRSPO\kompose.exe convert -f docker-compose.yml -o kubemanifests.yaml
+      kompose.version: 1.21.0 (992df58d8)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: app
+    name: app
+  spec:
+    ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+    selector:
+      io.kompose.service: app
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: D:\TRSPO\kompose.exe convert -f docker-compose.yml -o kubemanifests.yaml
+      kompose.version: 1.21.0 (992df58d8)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: postgres
+    name: postgres
+  spec:
+    ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+    selector:
+      io.kompose.service: postgres
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: D:\TRSPO\kompose.exe convert -f docker-compose.yml -o kubemanifests.yaml
+      kompose.version: 1.21.0 (992df58d8)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: app
+    name: app
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        io.kompose.service: app
+    strategy: {}
+    template:
+      metadata:
+        annotations:
+          kompose.cmd: D:\TRSPO\kompose.exe convert -f docker-compose.yml -o kubemanifests.yaml
+          kompose.version: 1.21.0 (992df58d8)
+        creationTimestamp: null
+        labels:
+          io.kompose.network/back-tier: "true"
+          io.kompose.service: app
+      spec:
+        containers:
+        - image: muntian/assembling:latest
+          imagePullPolicy: ""
+          name: app
+          ports:
+          - containerPort: 8080
+          resources: {}
+        restartPolicy: Always
+        serviceAccountName: ""
+        volumes: null
+  status: {}
+- apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    creationTimestamp: null
+    name: back-tier
+  spec:
+    ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            io.kompose.network/back-tier: "true"
+    podSelector:
+      matchLabels:
+        io.kompose.network/back-tier: "true"
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: D:\TRSPO\kompose.exe convert -f docker-compose.yml -o kubemanifests.yaml
+      kompose.version: 1.21.0 (992df58d8)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: postgres
+    name: postgres
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        io.kompose.service: postgres
+    strategy: {}
+    template:
+      metadata:
+        annotations:
+          kompose.cmd: D:\TRSPO\kompose.exe convert -f docker-compose.yml -o kubemanifests.yaml
+          kompose.version: 1.21.0 (992df58d8)
+        creationTimestamp: null
+        labels:
+          io.kompose.network/back-tier: "true"
+          io.kompose.service: postgres
+      spec:
+        containers:
+        - env:
+          - name: POSTGRES_DB
+            value: assemblingdb
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: POSTGRES_USER
+            value: postgres
+          image: postgres:latest
+          imagePullPolicy: ""
+          name: postgres
+          ports:
+          - containerPort: 5432
+          resources: {}
+        restartPolicy: Always
+        serviceAccountName: ""
+        volumes: null
+  status: {}
+- apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    creationTimestamp: null
+    name: back-tier
+  spec:
+    ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            io.kompose.network/back-tier: "true"
+    podSelector:
+      matchLabels:
+        io.kompose.network/back-tier: "true"
+kind: List
+metadata: {}
+

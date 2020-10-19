@@ -1,0 +1,35 @@
+version: "3"
+services:
+    postgres:
+        image: postgres:latest
+        container_name: postgres
+        #volumes:
+        #    - postgres-data:/var/lib/postgresql/data
+        expose:
+            - 5432
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=assemblingdb
+        networks:
+            - back-tier
+    app:
+        #image: muntian/assembling:latest
+        container_name: app
+        build: ./
+        expose:
+            - 8080
+        ports:
+            - "8080:8080"
+        links:
+            - postgres
+        depends_on:
+            - postgres
+        networks:
+            - back-tier
+        
+networks:
+    back-tier:
+        driver: bridge
