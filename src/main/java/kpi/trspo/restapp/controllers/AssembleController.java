@@ -9,10 +9,12 @@ import kpi.trspo.restapp.services.AssemblingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,7 +27,7 @@ public final class AssembleController {
     public AssembleController(AssemblingService assemblingService) {
         this.assemblingService = assemblingService;
     }
-
+    
     @PostMapping("camera_back")
     public ResponseEntity<CameraBack> assemble(@RequestBody AssembleBackDTO assembleBackDTO) throws Exception {
         UUID collectorId = assembleBackDTO.getCollectorId();

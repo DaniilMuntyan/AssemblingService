@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/collectors")
+@RestController 
+@RequestMapping("/api/service/assembling/collectors")
 public final class CollectorController {
 
     private final CollectorService collectorServiceService;
