@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: assembling-multi-pod
+    labels:
+        io.kompose.service: postgres
+        app   : assembling
+        end   : prod
+        owner : DaniilMuntian
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            io.kompose.service: postgres
+    template:
+        metadata:
+            labels:
+                io.kompose.network/back-tier: "true"
+                io.kompose.service: postgres
+        spec:
+            containers:
+                - name  : assembling-app
+                  image : muntian/assembling:v1
+                  ports :
+                    - containerPort: 8080
+                  
+                - name  : assembling-db
+                  image : postgres:latest
+                  ports :
+                    - containerPort: 5432
+                  env:
+                    - name: "POSTGRES_PASSWORD"
+                      value: "postgres"
+                    - name: "POSTGRES_USER"
+                      value: "postgres"
+                    - name: "POSTGRES_DB"
+                      value: "assemblingdb"
+                      
+            restartPolicy: Always

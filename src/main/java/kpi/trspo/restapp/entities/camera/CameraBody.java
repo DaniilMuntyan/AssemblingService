@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "camera_bodies")
+@Table(name="camera_bodies")
 
 @Data
 @NoArgsConstructor
@@ -24,12 +24,12 @@ public final class CameraBody {
     @NonNull
     private Dimensions dimensions;
 
-    @Column(name = "color")
+    @Column(name="color")
     @NonNull
     private String color;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cameraBody", orphanRemoval = true)
-    @JoinColumn(name = "camera_id")
+    @JoinColumn(name="camera_id")
     private Camera camera;
 }

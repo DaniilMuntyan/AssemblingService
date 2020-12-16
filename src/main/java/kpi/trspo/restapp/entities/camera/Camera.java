@@ -27,17 +27,17 @@ public final class Camera {
     private Boolean isWipedClean = false;
     private Boolean isRejected = false;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
     @JoinColumn(name = "back_id")
     @NonNull
     private CameraBack cameraBack;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
     @JoinColumn(name = "body_id")
     @NonNull
     private CameraBody cameraBody;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
     @JoinColumn(name = "lens_id")
     @NonNull
     private CameraLens cameraLens;

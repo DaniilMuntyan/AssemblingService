@@ -36,7 +36,7 @@ public final class CameraBack {
     private Integer colorDepth;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cameraBack", orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "cameraBack", orphanRemoval = true)
     @JoinColumn(name = "camera_id")
     private Camera camera;
 }
